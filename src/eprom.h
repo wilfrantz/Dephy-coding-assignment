@@ -41,7 +41,7 @@ namespace eprom
         // TODO: Implement the commands
 
         // Function to create a new virtual EPROM chip with a specified capacity
-        std::string createVeprom(int capacityKB);
+        void Eprom::createVeprom(std::string option);
         // Method to load a vEPROM file
         std::string loadVeprom(const std::string &filePath);
         // Method to write a raw string of bytes to a specific address on the virtual EPROM chip
@@ -57,9 +57,17 @@ namespace eprom
         // Method to erase the EPROM back to its original state
         void eraseVeprom();
 
+        void vEpromFileSetter(std::string &filePath)
+        {
+            vEpromFile = filePath;
+        }
+
+        std::string vEpromFileGetter() { return vEpromFile; }
+
         ~Eprom() = default;
 
     private:
+        std::string vEpromFile{"vEprom.bin"};
     };
 } // !eprom namespace
 #endif // EPROM_H
