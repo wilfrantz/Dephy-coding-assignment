@@ -49,12 +49,11 @@ namespace eprom
     }
 
     /**
-     * @brief
-     * Usage: veprom create 256 creates a new virtual EPROM chip with a capacity of 256 KB.
+     * @brief: veprom create 256 creates a new virtual EPROM chip with a capacity of 256 KB.
      *It outputs the path of the file used to store the vEPROM. This is the vEprom that’ll
      *be used when the other commands are called.
      */
-    void Eprom::createVeprom(std::string capacityKB)
+    void Eprom::createVeprom(const std::string &capacityKB)
     {
         // Calculate the size in bytes
         int sizeKB = stoi(capacityKB);
@@ -64,7 +63,7 @@ namespace eprom
         std::vector<char> data(fileSize, 0);
 
         // Open the file for writing
-        std::ofstream file(vEpromFile, std::ios::out | std::ios::binary);
+        std::ofstream file(vEpromChip, std::ios::out | std::ios::binary);
         if (!file.is_open())
         {
             std::cerr << "Failed to open file for writing." << std::endl;
@@ -76,24 +75,39 @@ namespace eprom
 
         file.close();
 
-        std::cout << "Virtual EPROM file successfully created at: " << vEpromFile << std::endl;
+        std::cout << "Virtual EPROM file successfully created at: " << vEpromChip << std::endl;
     }
 
-    /** @brief: loads a vEPROM file that’ll be used when the other commands are called.
+    /**
+     * @brief: loads a vEPROM file that’ll be used when the other commands are called.
      * @param: /path/to/veprom/file.
      */
     void Eprom::loadVeprom(const std::string &filePath)
     {
-        this->vEpromFile = filePath;
+        vEpromFiles.insert(vEpromFiles.begin(), filePath);
+    }
+
+    /**
+     * @brief:  lists the files on the virtual EPROM chip.
+     * @Usage: `veprom list`
+     * @return std::vector<std::string>
+     */
+    void Eprom::listFiles()
+    {
+        for (const auto &file : vEpromFiles)
+        {
+            std::cout << file << std::endl;
+        }
     }
 
     /**
      * @brief: Method to erase the EPROM back to its original state
+     * @Usage: `veprom erase`
      */
     void Eprom::eraseVeprom()
     {
         // Open the file for truncation
-        std::ofstream file(vEpromFile, std::ios::out | std::ios::binary | std::ios::trunc);
+        std::ofstream file(vEpromChip, std::ios::out | std::ios::binary | std::ios::trunc);
         if (!file.is_open())
         {
             std::cerr << "Failed to open file for erasing." << std::endl;

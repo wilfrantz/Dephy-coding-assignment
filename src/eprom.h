@@ -41,8 +41,8 @@ namespace eprom
         // TODO: Implement the commands
 
         // Zero arguments
+        void listFiles();
         void eraseVeprom();
-        std::vector<std::string> listFiles();
 
         // One argument
         void loadVeprom(const std::string &filePath);
@@ -57,7 +57,8 @@ namespace eprom
         ~Eprom() = default;
 
     private:
-        std::string vEpromFile{"vEprom.bin"};
+        std::string vEpromChip{"vEprom.bin"};
+        std::vector<std::string> vEpromFiles{"vEprom.txt"};
     };
 } // !eprom namespace
 #endif // EPROM_H
