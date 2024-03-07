@@ -2,7 +2,6 @@
 
 namespace eprom
 {
-
     /**
      * @brief: Process the user input and return the
      * Corresponding command.
@@ -55,10 +54,10 @@ namespace eprom
      *It outputs the path of the file used to store the vEPROM. This is the vEprom that’ll
      *be used when the other commands are called.
      */
-    void Eprom::createVeprom(std::string option)
+    void Eprom::createVeprom(std::string capacityKB)
     {
         // Calculate the size in bytes
-        int sizeKB = stoi(option);
+        int sizeKB = stoi(capacityKB);
         std::streamsize fileSize = sizeKB * 1024;
 
         // Create a vector to hold the data (all zeros for an empty file)
@@ -72,13 +71,20 @@ namespace eprom
             return;
         }
 
-        // Write the data to the file
+        // Write data to the file
         file.write(data.data(), fileSize);
 
-        // Close the file
         file.close();
 
-        std::cout << "Virtual EPROM file created successfully at: " << vEpromFile << std::endl;
+        std::cout << "Virtual EPROM file successfully created at: " << vEpromFile << std::endl;
+    }
+
+    /** @brief: loads a vEPROM file that’ll be used when the other commands are called.
+     * @param: /path/to/veprom/file.
+     */
+    void Eprom::loadVeprom(const std::string &filePath)
+    {
+        this->vEpromFile = filePath;
     }
 
     /**
@@ -94,10 +100,9 @@ namespace eprom
             return;
         }
 
-        // Close the file
         file.close();
 
-        std::cout << "Virtual EPROM file erased successfully." << std::endl;
+        std::cout << "Virtual EPROM file successfully erased." << std::endl;
     }
 
 } // !eprom namespcae
